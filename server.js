@@ -4,14 +4,15 @@ const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
 
-const PORT = 3001;
+const url = `${process.env.VERCEL_URL || 'http://localhost:3001'}`;
+const port = process.env.VERCEL_HTTPS_PORT || 3001;
 
 app.use(cors());
 const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: `http://localhost:3000`,
+        origin: `https://voc-two.vercel.app/chat`,
         methods: ["GET", "POST"]
     },
 });
@@ -25,6 +26,6 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(PORT, () => {
-    console.log(`Server running on: http://localhost:${PORT}`)
-})
+server.listen(port, () => {
+    console.log(`Server running on ${url}`);
+});
